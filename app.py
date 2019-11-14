@@ -29,7 +29,7 @@ def submit():
     execute_file = open("cmd_file","w") 
     execute_file.writelines(execute) 
     execute_file.close()
-    cmd = "../nuXmv-2.0.0-Linux/bin/nuXmv -source cmd_file > output_file.txt"
+    cmd = "./nuXmv -source cmd_file > output_file.txt"
     os.system(cmd)
     result_file = open("output_file.txt","r")
     data = result_file.read()

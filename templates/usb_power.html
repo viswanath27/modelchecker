@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>USB Power Management </h1>
+
+<p>This page shows the information of how this model is developed </p>
+
+
+  
+    <form action="{{ url_for('submit') }}" method="post">
+      <table style="width: 100%">
+        <tr>
+        <td>
+      <legend >CODE</legend>    
+      </td>
+      <td>
+      <legend >EXECUTE</legend>    
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {% if result != null %}
+        <textarea name="code" style="float: left;">{{result[0]}}</textarea>
+        {% else %}
+        <textarea name="code" style="float: left;"></textarea>
+        {% endif %}
+      </td>
+      <td>
+        {% if result != null %}        
+        <textarea name="execute" style="float: right;">{{result[1]}}</textarea>
+        {% else %}
+        <textarea name="execute" style="float: left;"></textarea>
+        {% endif %}
+
+      </td>
+
+    </tr>
+    </table>
+      
+        <a href=# id=test><button class='btn btn-default'>Submit</button></a>
+        
+
+    </form>
+
+
+
+<blockquote>
+  <pre>
+    <code>    
+        {% if result != null %}        
+          <p>{{ result[2] }} </p>
+        {% endif %}          
+    </code>
+  </pre>
+</blockquote>
+
+
+
+
+
+{% endblock %}

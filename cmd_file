@@ -1,0 +1,6 @@
+reset; 
+read_model -i code_file.smv ;
+go ;
+pick_state -v; 
+simulate -v
+quit;

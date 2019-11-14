@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>AC Power Management </h1>
+
+<p>This page shows the information of how this model is developed </p>
+
+<blockquote>
+  <pre>
+    <code>
+MODULE main
+VAR
+        b0 : boolean;
+        b1 : boolean;
+        b2 : boolean;
+ASSIGN
+        init(b0) := FALSE;
+        init(b1) := FALSE;
+        init(b2) := FALSE;
+        next(b0) := !b0;
+        next(b1) := (!b0 & b1)
+                | (b0 & !b1);
+        next(b2) := ((b0 & b1) & !b2)
+                | (!(b0 & b1) & b2);
+DEFINE
+        out := toint(b0)
+                + 2*toint(b1)
+                + 4*toint(b2);
+
+    </code>
+  </pre>
+</blockquote>
+<form method="POST"> 
+  <textarea name="textbox"></textarea>
+  <button type="submit" name="submit">Submit</button>
+</form>
+
+{% endblock %}

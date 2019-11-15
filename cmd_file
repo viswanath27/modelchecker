@@ -1,6 +1,5 @@
-reset; 
-read_model -i code_file.smv ;
-go ;
-pick_state -v; 
-simulate -v
+reset;
+read_model -i code_file.smv;
+go; 
+check_invar;
 quit;

@@ -2,6 +2,8 @@ from flask import Flask, render_template, request,flash,session
 from forms import  PostForm, InputForm
 from werkzeug import secure_filename
 import os
+import threading
+import time 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '16e562d5ee25333ffd3e53f3c879a125'
@@ -10,11 +12,17 @@ app.config['SECRET_KEY'] = '16e562d5ee25333ffd3e53f3c879a125'
 def start():
     return render_template("info.html")
 
+def process_kill():
+    time.sleep(2)
+    cmd = "pkill nuXmv"
+    os.system(cmd)
+    print("cleaned up the process if it has not exited properly")
 
 @app.route('/submit', methods=['POST','GET'])
 def submit():
+    thread1 = threading.Thread(target = process_kill)
     result = []
-    cmd = "rm -rf cmd_file code_file.smv"
+    cmd = "rm -rf cmd_file code_file.smv output_file.txt"
     os.system(cmd)
     
     code = request.form['code']
@@ -29,12 +37,14 @@ def submit():
     execute_file = open("cmd_file","w") 
     execute_file.writelines(execute) 
     execute_file.close()
-    cmd = "./nuXmv -source cmd_file > output_file.txt"
+    thread1.start()
+    cmd = "./nuXmv -source cmd_file > output_file.txt 2>&1"
     os.system(cmd)
     result_file = open("output_file.txt","r")
     data = result_file.read()
     result.append(data)
     print (data)
+    
     #print("Files written")
     #return 'You entered: {}'.format(request.form['text'])
     return render_template("usb_power.html",result=result)
@@ -68,16 +78,17 @@ def usb_power():
 	#print (text)
 	return render_template("usb_power.html",inputform=inputform)
 
-
+'''
 @app.route('/ac_power')
 def ac_power():
 	return render_template("ac_power.html")
-
+'''
+'''
 
 @app.route('/battery_backup')
 def battery_backup():
 	return render_template("battery_backup.html")	
-
+'''
 
 if __name__ == '__main__':
     app.run(debug=True)

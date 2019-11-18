@@ -9,8 +9,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '16e562d5ee25333ffd3e53f3c879a125'
 
 @app.route('/')
-def start():
-    return render_template("info.html")
+def home():
+    return render_template("home.html")
 
 def process_kill():
     time.sleep(2)

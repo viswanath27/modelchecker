@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1> nuXmv TOOL and its Usage </h1>
+<p>This web page shows the method or approach of how to use the nuXvm tool and related stuffs.</p>
+<p>Main points which needs to be addressed to first start the modeling </p>
+<ul>
+	<li><b>Represent the System</b></li>
+	<li><b>Define the functionality</b></li>
+	<li><b>Check for the response of system how it is behaving </b></li>
+</ul>
+  <p>A navigation bar is a navigation header that is placed at the top of the page.</p>
+
+
+<div class="container">
+  <h2>FSM in NUXMV tool</h2>
+  <p>all the above mentioned points are covered as part of the modeling and its details are understood in this section. Following are some of the important keywords one has to note before starting to use the system</p>            
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Heading</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><code>MODULE</code></td>
+        <td>Program always starts with <code> main()</code> and it is written as  <code> MODULE main()</code></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><code>VAR</code></td>
+        <td>Under this module you will have Variables which needs to be defined. There is exhaustive list of the variables which can be defined but for now we will go with simple options (like state variables and boolean)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><code>ASSIGN</code></td>
+        <td>In this section we basically assign the start of the state machine and also possible next states for the every state in the statemachine </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><code>INVAR</code></td>
+        <td>In this section, we write all the possible cases due to which each is entered</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><code>LTLSPEC</code></td>
+        <td>In this section, we write what all possible cases needs to be tested in a given statemachine for </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>Each of the above section will have big section by its own but in this page we dirve mostly by examples to understand the concepts </p>
+
+<p> Below is the example of the statemachine using which can we understand the above mentioned points in detail </p>
+
+<blockquote>
+  <pre>
+    <code> 
+-- <font color="green"><i>THIS IS THE SAMPLE STATE MACHINE </i></font>
+-- <font color="green"><i>THIS IS JUST A COMMENT LINE, WILL HELP IN ADDING SOME INFO WHILE FSM IS CODED</i></font>
+
+-- <font color="green"><i>MAIN  :  Module</i></font>
+MODULE main() 
+
+-- <font color="green"><i>VAR   : In this section where our required variables for representing statemachine are mentioned</i></font>
+VAR
+  state         : {RTCWIFIOFF, RTCWIFION};
+  RTC_WIFI_CONNECTION : boolean;
+  
+-- <font color="green"><i>ASSIGN: In this section we define the start state and next states of the state machines</i></font>
+ASSIGN
+  init(state) := RTCWIFIOFF;
+  next(state) := case
+    state = RTCWIFIOFF  : {RTCWIFION};
+    state = RTCWIFION   : {RTCWIFIOFF};
+  esac;
+
+-- <font color="green"><i>INVAR : In this section we defined the causes for system to enter into given state</i></font>
+INVAR state = RTCWIFIOFF  <-> (!VG45 & !VG42);
+INVAR state = RTCWIFION   <-> ( VG45 &  VG42);
+
+-- <font color="green"><i>SPEC  : In this section we define all the required rules against which state machine has to checked </i></font>
+LTLSPEC G(!VG42 | F VG45)
+LTLSPEC G(F VG42 | !VG45)
+LTLSPEC G(VG42 | VG45)
+LTLSPEC G(F VG42 | F VG45)
+    </code>
+  </pre>
+</blockquote>
+
+{% endblock %}
